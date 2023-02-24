@@ -21,14 +21,19 @@ export async function generateSuitabilyDataTable(result: ISuitabilyResult[]): Pr
         
         result.forEach( (r, index) => {
             if(index>1000){return;}
+            // ADDED MORE INFO FOR DEBUGGIN
+            /*
             let even= (isEven( Number(r.shipment.shipment.destination.address.street.length) ))
             let l = (even?'e':'o');
             let sizeD= r.driver.driver.name.length;
             let sizeS= r.shipment.shipment.destination.address.street.length;
+            let infoForDriver='-v:'+r.driver.vowels+'-c:'+ r.driver.consonants+ '-l:'+sizeD;
+            let infoForShipment = '-is:'+l+'-l:'+sizeS
+            */
             let obj = [
                 String(index+1),
-                r.driver.driver.name+'-v:'+r.driver.vowels+'-c:'+ r.driver.consonants+ '-l:'+sizeD, 
-                r.shipment.shipment.destination.address.street+'-is:'+l+'-l:'+sizeS, 
+                r.driver.driver.name, 
+                r.shipment.shipment.destination.address.street, 
                 String(r.suitabilityScore),
                 r.hasAnyCommonFactors?'Yes':'No',
             ]
