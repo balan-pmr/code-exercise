@@ -8,9 +8,10 @@ const Main = () => {
 
     const [messageCtx, setMessageCtx] = useState('')
     const [driversCtx, setDriversCtx ] = useState([])    
-    const [shipmentsCtx, setShipmentCtx ] = useState([])    
+    const [shipmentsCtx, setShipmentCtx ] = useState([])  
+    const [areFilesLoadedCtx, setFilesLoadedCtx] = useState(false)  
 
-    const mainValues = { messageCtx, setMessageCtx, driversCtx, setDriversCtx, shipmentsCtx, setShipmentCtx };
+    const mainValues = { messageCtx, setMessageCtx, driversCtx, setDriversCtx, shipmentsCtx, setShipmentCtx, areFilesLoadedCtx, setFilesLoadedCtx };
 
     return(
         <>

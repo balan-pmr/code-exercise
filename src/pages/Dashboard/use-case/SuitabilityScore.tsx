@@ -47,7 +47,7 @@ export async function executeSuitabilityScore  ( drivers: IDriver [], shipments:
                 limit++;
             }
 
-            console.log('- CASE USE 1 END -')
+            //console.log('- CASE USE 1 END -')
             // Ask if we have enough drivers to asign to oddShipments
             if (limit === driverSuitabily.length) {
                 console.warn('No drivers for oddShipments. check the results')
@@ -67,7 +67,7 @@ export async function executeSuitabilityScore  ( drivers: IDriver [], shipments:
                 }
             }
             
-            console.log('- CASE USE 2 END -')
+            //console.log('- CASE USE 2 END -')
 
             // USE CASE [3]   Executed in use cases before 
             // if the length of the shipment's destination street name shares any common factors (besides 1) with the length of the driver’s name, the 

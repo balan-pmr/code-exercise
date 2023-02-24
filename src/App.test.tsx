@@ -20,7 +20,7 @@ describe('Executing utils function', () => {
     
   });
 
-  describe('countVowels function', ()=>{
+  describe('count Vowels and Consonants an function', ()=>{
     
     test( 'Given a string, count the number of vowels', ()=>{
       let result = countVowels('abc');

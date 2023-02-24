@@ -34,13 +34,13 @@ This applications is using hooks, typescript, promises, context and reader files
 
 # Clean Architecture Folder Description
 
-adapters: Ensure data will work with a typed template and not depending with a specific source, any other connection can be set here
-components: Components can be used in any part of the project
-context: List all the context hook using in the project
-models: Interfaces definitions for strong data typed used for Typescript
-pages: All the components for bussiness logic
-utils: Utils functions
-use-case: Specific funtions used by the bussiness
+- adapters: Ensure data will work with a typed template and not depending with a specific source, any other connection can be set here
+- components: Components can be used in any part of the project
+- context: List all the context hook using in the project
+- models: Interfaces definitions for strong data typed used for Typescript
+- pages: All the components for bussiness logic
+- utils: Utils functions
+- use-case: Specific funtions used by the bussiness
 
 # Testing
 
@@ -56,14 +56,20 @@ npm test
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+```sh
+npm start
+```
+
+
 # External Libraries
 
 None
 
-# Notes
+# Important Notes
 
-
-Note: Lines below were genereted by React 
+- Table result are limited to 100 records, the component needs to be implemented with any lazy loader  or pagination table
+- Set REACT_APP_LIMIT_RESULTS value to -1 to render all the results but with no lazy loader nor paginations, app can crash
+- Lines below were genereted by React 
 
 # Getting Started with Create React App
 

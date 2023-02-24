@@ -1,6 +1,6 @@
 import {ITableData, ITitleColums, IRows}  from '../../../models/Table.model';
 import { ISuitabilyResult } from '../models/Suitability.model';
-import {isEven} from '../../../utils/utils';
+//import {isEven} from '../../../utils/utils';
 
 
 export async function generateSuitabilyDataTable(result: ISuitabilyResult[]): Promise<ITableData> {
@@ -20,7 +20,7 @@ export async function generateSuitabilyDataTable(result: ISuitabilyResult[]): Pr
             'Has bonification Factor?' ]};
         
         result.forEach( (r, index) => {
-            if(index>1000){return;}
+            //if(index>Number(process.env.REACT_APP_LIMIT_RESULTS)){return;}
             // ADDED MORE INFO FOR DEBUGGIN
             /*
             let even= (isEven( Number(r.shipment.shipment.destination.address.street.length) ))
@@ -70,3 +70,15 @@ async function wait() {
         }
     )
 }*/
+
+
+    
+export const generateAndDonwloadFile = (title:string,content:string)=>{
+    let element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+    element.setAttribute('download', title+Date.now().toString() );
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);        
+}

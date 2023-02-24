@@ -10,7 +10,7 @@ import { readFromText } from './utils/utils'
 
 const Loader  = () =>{
 
-    const { setDriversCtx, setShipmentCtx, driversCtx, shipmentsCtx,setMessageCtx } = useContext(MainContext);
+    const { setDriversCtx, setShipmentCtx, driversCtx, shipmentsCtx,setMessageCtx, setFilesLoadedCtx} = useContext(MainContext);
     const [driversText, setDriversText] = useState('No drivers data')
     const [shipmentText, setShipmentText] = useState('No shipment data')
     const driverFileRef =useRef<HTMLInputElement>(null);
@@ -25,7 +25,8 @@ const Loader  = () =>{
         setDriversText(prev => allText );
         const driversNameList: IDriver [] = createAdapterDriverNamesList(listOfDrivers);
         setDriversCtx(driversNameList);
-        setMessageCtx('File Loaded.')
+        setMessageCtx('File Driver names Loaded.')
+        shipmentFileRef.current !== null && shipmentFileRef.current.value!=='' ? setFilesLoadedCtx(true): setFilesLoadedCtx(false)
     }
 
     const showShipmentFile = async (e: any) => {
@@ -36,7 +37,8 @@ const Loader  = () =>{
         setShipmentText(prev => allText );
         const shipmentAdressNameList: IShipment [] = createAdapterShipmentAddressNamesList(listOfShipments);
         setShipmentCtx(shipmentAdressNameList);
-        setMessageCtx('File Loaded')
+        setMessageCtx('File Shipment destination address Loaded')
+        driverFileRef.current !== null && driverFileRef.current.value!==''  ? setFilesLoadedCtx(true): setFilesLoadedCtx(false)
     }
     
     const numberOfDrivers = driversCtx? driversCtx.length: 0;
@@ -57,7 +59,7 @@ const Loader  = () =>{
             let emptyDriver: IShipment []=[];
             setShipmentCtx(emptyShipment);
             setDriversCtx(emptyDriver);
-            
+            setFilesLoadedCtx(false)
         }catch(error){
             console.log('clearRefFiles error: '+error)
         }
