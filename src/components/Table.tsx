@@ -39,13 +39,13 @@ const Table = (props:TablePros) =>{
             let rowHTML = (
                 dataRows.map((row, r) => 
                     (
-                    <div className="div-table-row" key={r}>
+                     <div className="div-table-row" key={r}>
                         {
                             row.map( (col, c) => (
                                 <div className="div-table-col" key={c}> {col} </div>
                             ))
                         }
-                    </div>
+                      </div>                        
                     )
                 )
             );

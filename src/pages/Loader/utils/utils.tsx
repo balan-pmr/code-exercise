@@ -6,7 +6,7 @@ export const readFromText = (text: string) : Promise<IFileEndpoint>=>{
     return (
         new Promise( (resolve)=>{
             text.split('\n').forEach(
-                line=>list.lines.push(line)
+                line=>list.lines.push(line.replaceAll('\r', ''))
             )
             resolve(list)
         }

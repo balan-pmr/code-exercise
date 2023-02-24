@@ -24,3 +24,10 @@ textarea {
 
   width: 100%;
 }
+
+#overlay {
+  background-color: #EEEEEE;
+  position: absolute;
+  z-index:100;
+}
+

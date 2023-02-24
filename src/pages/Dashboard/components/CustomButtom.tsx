@@ -1,14 +1,17 @@
 
 interface IProps {
-    classStyle: string;
-    label: string;
+    isProcessing: boolean;
     onClickFn: any;
 }
 
 const CustomButtom =  (props: IProps) => {
+
+    const executeButtonClass = !props.isProcessing? 'Dash-button-Active' : 'Dash-button-Inactive';
+    const executeButtonLabel = !props.isProcessing ? 'Execute Best Suitability Score' : 'Please wait...';
+    
     return (
         <div style={{ marginBottom: '60px' }} > 
-            <p onClick={() => { props.onClickFn() }} className={props.classStyle}> {props.label}  </p>
+         <button onClick={ (e) => {  props.onClickFn(e) }} className={executeButtonClass}> {executeButtonLabel} </button>
         </div>
     );
 };

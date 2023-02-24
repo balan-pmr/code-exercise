@@ -5,7 +5,7 @@ import { IDriverSuitabily,IShipmentSuitabily, ISuitabilyResult } from '../models
 import {isEven, countVowels, countConsonants} from '../../../utils/utils';
 
 
-const executeSuitabilityScore =  async ( drivers: IDriver [], shipments: IShipment[] ) : Promise<{result:string, data:any }>   =>{
+export async function executeSuitabilityScore  ( drivers: IDriver [], shipments: IShipment[] ) : Promise<{result:string, data:any }> {
 
     if (drivers.length > 0 && shipments.length > 0) {
         try {
@@ -27,13 +27,14 @@ const executeSuitabilityScore =  async ( drivers: IDriver [], shipments: IShipme
             // Get driver array order by desc drivers vowels
             driverSuitabily.sort((a, b) => b.vowels - a.vowels)
 
-            //console.log({ evenShipmentSuitabily, driverSuitabily, oddShipmentSuitabily })
+            console.log('Data ready to Process!')
+            console.log({ evenShipmentSuitabily, driverSuitabily, oddShipmentSuitabily })
 
             // Variable results
             let evenResults: ISuitabilyResult[] = [];
             let oddResults: ISuitabilyResult[] = [];
 
-            let limit = 1;
+            let limit = 0;
 
             // EXECUTING USE CASE [1] 
             // if the length of the shipment's destination street name is even, the base suitability score (SS) is the number of vowels in the driver’s name multiplied by 1.5.
@@ -46,6 +47,7 @@ const executeSuitabilityScore =  async ( drivers: IDriver [], shipments: IShipme
                 limit++;
             }
 
+            console.log('- CASE USE 1 END -')
             // Ask if we have enough drivers to asign to oddShipments
             if (limit === driverSuitabily.length) {
                 console.warn('No drivers for oddShipments. check the results')
@@ -53,7 +55,7 @@ const executeSuitabilityScore =  async ( drivers: IDriver [], shipments: IShipme
             
             // EXECUTING USE CASE [2] if the length of the shipment's destination street name is odd, the base SS is the number of consonants in the driver’s name multiplied by 1.
                 
-                const restOfDrivers = driverSuitabily.slice(limit - 1, driverSuitabily.length)
+                const restOfDrivers = driverSuitabily.slice(limit, driverSuitabily.length)
                 restOfDrivers.sort((a, b) => b.consonants - a.consonants)
 
                 for (let i = 0; (i < oddShipmentSuitabily.length && i < restOfDrivers.length); i++) {
@@ -64,7 +66,9 @@ const executeSuitabilityScore =  async ( drivers: IDriver [], shipments: IShipme
                     oddResults.push(result);
                 }
             }
-                
+            
+            console.log('- CASE USE 2 END -')
+
             // USE CASE [3]   Executed in use cases before 
             // if the length of the shipment's destination street name shares any common factors (besides 1) with the length of the driver’s name, the 
             // SS is increased by 50% above the base SS.
@@ -89,8 +93,6 @@ const executeSuitabilityScore =  async ( drivers: IDriver [], shipments: IShipme
 
 }
 
-
-export default executeSuitabilityScore;
 
 function getEvenArrayOfShipmentsOrderByDesc(shipments:IShipment[]): IShipmentSuitabily[] {
     const evenShipments = shipments.filter(shipment => isEven(Number(shipment.destination.address.street.length)))

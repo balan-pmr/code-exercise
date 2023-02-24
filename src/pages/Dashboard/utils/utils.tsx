@@ -1,8 +1,10 @@
 import {ITableData, ITitleColums, IRows}  from '../../../models/Table.model';
 import { ISuitabilyResult } from '../models/Suitability.model';
+import {isEven} from '../../../utils/utils';
+
 
 export async function generateSuitabilyDataTable(result: ISuitabilyResult[]): Promise<ITableData> {
-    return new Promise( resolve => {
+    return  new Promise( (resolve) => {
         let dataTable: ITableData = {
             tableName: 'Results',
             data: [],
@@ -18,10 +20,15 @@ export async function generateSuitabilyDataTable(result: ISuitabilyResult[]): Pr
             'Has bonification Factor?' ]};
         
         result.forEach( (r, index) => {
+            if(index>1000){return;}
+            let even= (isEven( Number(r.shipment.shipment.destination.address.street.length) ))
+            let l = (even?'e':'o');
+            let sizeD= r.driver.driver.name.length;
+            let sizeS= r.shipment.shipment.destination.address.street.length;
             let obj = [
                 String(index+1),
-                r.driver.driver.name, 
-                r.shipment.shipment.destination.address.street , 
+                r.driver.driver.name+'-v:'+r.driver.vowels+'-c:'+ r.driver.consonants+ '-l:'+sizeD, 
+                r.shipment.shipment.destination.address.street+'-is:'+l+'-l:'+sizeS, 
                 String(r.suitabilityScore),
                 r.hasAnyCommonFactors?'Yes':'No',
             ]
@@ -36,8 +43,8 @@ export async function generateSuitabilyDataTable(result: ISuitabilyResult[]): Pr
 }
 
 export async function  getTotalPoints (result: ISuitabilyResult[]): Promise<number> {
-    await wait();
-    return new Promise( resolve =>{
+    //await wait();
+    return  new Promise( (resolve) =>{
         let points:number =0;
         result.forEach(r => {
             points += r.hasAnyCommonFactors ? r.suitabilityScore * 1.5 : r.suitabilityScore;
@@ -46,6 +53,7 @@ export async function  getTotalPoints (result: ISuitabilyResult[]): Promise<numb
     })
 }
 
+/*
 async function wait() {
     return new Promise(
         (resolve)=>{
@@ -56,4 +64,4 @@ async function wait() {
             }, 2000)
         }
     )
-}
+}*/
