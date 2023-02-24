@@ -2,7 +2,7 @@
 import { IDriver } from '../../../models/Driver.model';
 import { IShipment } from '../../../models/Shipment.model';
 import { IDriverSuitabily,IShipmentSuitabily, ISuitabilyResult } from '../models/Suitability.model';
-import {isStringEvenByLenght, countVowels, countConsonants} from '../../../utils/utils';
+import {isEven, countVowels, countConsonants} from '../../../utils/utils';
 
 
 const executeSuitabilityScore =  async ( drivers: IDriver [], shipments: IShipment[] ) : Promise<{result:string, data:any }>   =>{
@@ -93,13 +93,13 @@ const executeSuitabilityScore =  async ( drivers: IDriver [], shipments: IShipme
 export default executeSuitabilityScore;
 
 function getEvenArrayOfShipmentsOrderByDesc(shipments:IShipment[]): IShipmentSuitabily[] {
-    const evenShipments = shipments.filter(shipment => isStringEvenByLenght(shipment.destination.address.street))
+    const evenShipments = shipments.filter(shipment => isEven(Number(shipment.destination.address.street.length)))
     const evenShipmentSuitabily: IShipmentSuitabily[] = evenShipments.map(s => ({ shipment: s, addressSteetLength: Number(s.destination.address.street.length) }))
     return evenShipmentSuitabily.sort((a, b) => b.addressSteetLength - a.addressSteetLength)
 }
 
 function getOddArrayOfShipmentsOrderByDesc(shipments:IShipment[]): IShipmentSuitabily[] {
-    const oddShipments = shipments.filter(shipment => !isStringEvenByLenght(shipment.destination.address.street))
+    const oddShipments = shipments.filter(shipment => !isEven(Number(shipment.destination.address.street.length)))
     const oddShipmentSuitabily: IShipmentSuitabily[] = oddShipments.map(s => ({ shipment: s, addressSteetLength: Number(s.destination.address.street.length) }))
     return oddShipmentSuitabily.sort((a, b) => b.addressSteetLength - a.addressSteetLength)
 }

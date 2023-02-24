@@ -1,5 +1,5 @@
-export const isStringEvenByLenght = (string:string)=>{
-    return string.length % 2 === 0 ? true: false;
+export const isEven = (number:number)=>{
+    return number % 2 === 0 ? true: false;
 }
 
 export const countVowels = (string:string):number =>{

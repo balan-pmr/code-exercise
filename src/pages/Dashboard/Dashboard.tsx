@@ -1,16 +1,20 @@
-import { useContext, useRef } from "react";
+import { MutableRefObject, useContext, useRef } from "react";
 import { MainContext } from '../../../src/contexts/Main.context';
 import Table from '../../components/Table'
 import './Dashboard.css';
-import executeSuitabilityScore from './UseCase/SuitabilityScore'
+import executeSuitabilityScore from './use-case/SuitabilityScore'
 import { ISuitabilyResult } from './models/Suitability.model';
+import {ITableData}  from '../../models/Table.model';
+import {generateSuitabilyDataTable, getTotalPoints }  from './utils/utils';
+import Score from './components/Score';
+import CustomButtom from './components/CustomButtom';
 
 const Dashboard = () => {
 
     const { setMessageCtx, driversCtx, shipmentsCtx } = useContext(MainContext);
     const isProcessingRef = useRef(false);
     const totalOfPointsRef = useRef(0);
-
+    const dataTableRefRef = useRef() as MutableRefObject<ITableData>
 
     const processLists = async () => {
         if (isProcessingRef.current) return;
@@ -19,12 +23,11 @@ const Dashboard = () => {
         const execution = await executeSuitabilityScore(driversCtx, shipmentsCtx)
         if (execution.result === 'ok') {
             let results: ISuitabilyResult[] = execution.data;
-            let points: number = 0;
-            results.forEach(r => {
-                console.log('Driver: ' + r.driver.driver.name + ' -> Shipment: ' + r.shipment.shipment.destination.address.street);
-                points += r.hasAnyCommonFactors ? r.suitabilityScore * 1.5 : r.suitabilityScore;
-            })
-            totalOfPointsRef.current = points;
+            const dataTable :ITableData = await generateSuitabilyDataTable(results)
+            const totalPoints : number = await getTotalPoints(results);
+            totalOfPointsRef.current = totalPoints
+            dataTableRefRef.current = dataTable;
+            console.log(dataTable, totalPoints)
             setMessageCtx('Execution Successfully!')
         } else {
             setMessageCtx('An error happends when executing suitability score: ' + execution.result)
@@ -34,21 +37,15 @@ const Dashboard = () => {
 
     const executeButtonClass = !isProcessingRef.current ? 'Dash-button-Active' : 'Dash-button-Inactive';
     const executeButtonLabel = !isProcessingRef.current ? 'Execute Best Suitability Score' : 'Please wait...';
+    
 
     return (
         <section style={{ display: 'grid', justifyContent: 'center' }}>
-
-            <div style={{ margin: '40px' }} >
-                <p onClick={() => { processLists() }} className={executeButtonClass}> {executeButtonLabel}  </p>
-            </div>
-
-            <Table />
-
-            <div style={{ margin: '100px' }}>
-                <p> Total of Suitability Score </p>
-                <h1> {totalOfPointsRef.current} Points</h1>
-            </div>
-
+            <CustomButtom label={executeButtonLabel} classStyle={executeButtonClass} onClickFn={processLists}  />
+            <section style= {{display: 'flex',justifyContent: 'space-evenly'}} >
+                <Table data={dataTableRefRef} />
+                <Score points={totalOfPointsRef.current}/>
+            </section>
         </section>
     );
 
@@ -56,4 +53,6 @@ const Dashboard = () => {
 
 };
 
+
 export default Dashboard;
+

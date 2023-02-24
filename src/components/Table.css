@@ -1,0 +1,26 @@
+
+.div-table {
+    border-spacing: 5px; /* cellspacing:poor IE support for  this */
+    font-size: 15px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+  }
+  .div-table-row {
+    display: table-row;
+    width: auto;
+    clear: both;
+  }
+  .div-table-col {
+    float: left; /* fix for  buggy browsers */
+    display: table-column;         
+    width: 200px;         
+  }
+
+  .div-table-title {
+    display: table-row;
+    width: auto;
+    clear: both;
+    font-weight: bold;
+  }

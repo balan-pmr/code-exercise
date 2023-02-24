@@ -1,38 +1,67 @@
+import './Table.css';
+import {ITableData}  from '../models/Table.model';
+import { RefObject } from 'react';
 
+interface TablePros{
+    data: RefObject<ITableData>;
+}
 
-const Table = () =>{
+const Table = (props:TablePros) =>{
+
+    const tableName : string | undefined = props.data.current?.tableName;
+    const titles : string [] | undefined = props.data.current?.titles
+    const dataRows : string[][] | undefined = props.data.current?.data;
+
+    const getTitlesHTML = processTitlesHTML(titles);
+    const getRowsHTML = processRowsHTML(dataRows);
+    
     return(
-        <table>
-            <thead>
-                <tr>
-                    <th colSpan={5} >Shipment destinations and drivers</th>
-                </tr>
-                <tr>
-                    <th>Employee's Name</th>
-                    <th>Vowels</th>
-                    <th>Consonants</th>
-                    <th>Destination Street Name</th>
-                    <th>Suitability Score</th>                    
-                </tr>                             
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Pedro Balan Martinez Rosales</td>
-                    <td>7</td>
-                    <td>12</td>
-                    <td>Rio Blanco, Veracruz</td>
-                    <td>12</td>
-                </tr>
-                <tr>
-                    <td>Alejandra Anaya Cantella</td>
-                    <td>23</td>
-                    <td>34</td>
-                    <td>Cuahutemoch, CDMX</td>
-                    <td>12</td>
-                </tr>                
-            </tbody>
-        </table>
+        <div className="div-table">
+            <div className="div-table-title"> { tableName ? tableName: "Results"} </div>
+            <div className="div-table-row">
+                {getTitlesHTML}
+            </div>
+            {getRowsHTML}
+        </div>
+ 
     )
+
+
+    function processTitlesHTML(titles: string[] | undefined) {
+        return(
+            titles? titles.map( title =>  <div className="div-table-col" key={title}><strong key={title} >{title}</strong> </div>): 
+            <div className="div-table-col"><strong>No data </strong> </div>             
+        )
+    }
+
+    function processRowsHTML(dataRows: string[][] | undefined) {
+        if (dataRows) {
+            let rowHTML = (
+                dataRows.map((row, r) => 
+                    (
+                    <div className="div-table-row" key={r}>
+                        {
+                            row.map( (col, c) => (
+                                <div className="div-table-col" key={c}> {col} </div>
+                            ))
+                        }
+                    </div>
+                    )
+                )
+            );
+            return rowHTML;
+        } else {
+            return <div className="div-table-row">
+                <div className="div-table-col"><strong>No data</strong> </div>
+            </div>
+        }
+    }
+    
+
+    
 }
 
 export default Table;
+
+
+
